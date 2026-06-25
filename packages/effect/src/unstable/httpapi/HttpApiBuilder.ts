@@ -174,14 +174,15 @@ type EndpointMap<Endpoints extends HttpApiEndpoint.Any> = {
 
 type HandlerRequirements<
   Endpoint extends HttpApiEndpoint.Any,
-  R1
+  R1,
+  R = HttpApiEndpoint.ExcludeProvided<
+    Endpoint,
+    R1 | HttpApiEndpoint.ServerServices<Endpoint>
+  >
 > =
   | HttpApiEndpoint.Middleware<Endpoint>
   | HttpApiEndpoint.MiddlewareServices<Endpoint>
-  | (HttpApiEndpoint.ExcludeProvided<
-    Endpoint,
-    R1 | HttpApiEndpoint.ServerServices<Endpoint>
-  > extends infer _R ? _R extends never ? never : HttpRouter.Request<"Requires", _R> : never)
+  | ([R] extends [never] ? never : HttpRouter.Request<"Requires", R>)
 
 type HandlerOptions = { readonly uninterruptible?: boolean | undefined }
 
@@ -267,13 +268,7 @@ export interface Handlers<
     >,
     options?: { readonly uninterruptible?: boolean | undefined } | undefined
   ): Handlers<
-    | R
-    | HttpApiEndpoint.Middleware<EndpointsByName[Name]>
-    | HttpApiEndpoint.MiddlewareServices<EndpointsByName[Name]>
-    | (HttpApiEndpoint.ExcludeProvided<
-      EndpointsByName[Name],
-      R1 | HttpApiEndpoint.ServerServices<EndpointsByName[Name]>
-    > extends infer _R ? _R extends never ? never : HttpRouter.Request<"Requires", _R> : never),
+    R | HandlerRequirements<EndpointsByName[Name], R1>,
     EndpointsByName,
     HandledNames | Name
   >
@@ -305,13 +300,7 @@ export interface Handlers<
     >,
     options?: { readonly uninterruptible?: boolean | undefined } | undefined
   ): Handlers<
-    | R
-    | HttpApiEndpoint.Middleware<EndpointsByName[Name]>
-    | HttpApiEndpoint.MiddlewareServices<EndpointsByName[Name]>
-    | (HttpApiEndpoint.ExcludeProvided<
-      EndpointsByName[Name],
-      R1 | HttpApiEndpoint.ServerServices<EndpointsByName[Name]>
-    > extends infer _R ? _R extends never ? never : HttpRouter.Request<"Requires", _R> : never),
+    R | HandlerRequirements<EndpointsByName[Name], R1>,
     EndpointsByName,
     HandledNames | Name
   >
