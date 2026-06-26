@@ -1,5 +1,13 @@
 # effect
 
+## 4.0.0-beta.91
+
+### Patch Changes
+
+- [#2488](https://github.com/Effect-TS/effect-smol/pull/2488) [`aaa21a3`](https://github.com/Effect-TS/effect-smol/commit/aaa21a369a171c600db294f2a4f640583043e150) Thanks @fubhy! - Fix `String.camelCase` and `String.pascalCase` handling of numeric word segments, and add `String.configCase` for configuration key casing.
+
+- [#2485](https://github.com/Effect-TS/effect-smol/pull/2485) [`3475ee6`](https://github.com/Effect-TS/effect-smol/commit/3475ee6c2bda6b05c6d7a12ce30c8bb840b5b1a6) Thanks @tim-smart! - fix RequestResolver interruption
+
 ## 4.0.0-beta.90
 
 ### Patch Changes
